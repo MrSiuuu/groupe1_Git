@@ -1,8 +1,18 @@
-import random
+# Fonction pour générer un mot basé sur la table de probabilités
+def generer_mot(table_probabilites, longueur_max=10):
+    mot = random.choice(list(table_probabilites.keys()))
+    while len(mot) < longueur_max:
+        lettre_actuelle = mot[-1]
+        if lettre_actuelle in table_probabilites:
+            lettre_suivante = random.choices(
+                list(table_probabilites[lettre_actuelle].keys()),
+                list(table_probabilites[lettre_actuelle].values())
+            )[0]
+            mot += lettre_suivante
+        else:
+            break
+    return mot
 
-# Lecture du fichier mot.txt
-with open('mot.txt', 'r', encoding='utf-8') as fichier:
-    mots = fichier.read().splitlines()
-
-# Initialisation du dictionnaire des occurrences
-dictionnaire_occurrences = {}
+# Génération de plusieurs mots pour observer la diversité
+mots_genres = [generer_mot(table_probabilites) for _ in range(4)]
+print("Mots générés :", mots_genres)
